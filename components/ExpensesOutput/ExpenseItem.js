@@ -1,0 +1,60 @@
+import { Text, Pressable, View, StyleSheet } from "react-native";
+import { GlobalStyles } from "../../constants/styles";
+import { getFormattedDate } from "../../util/date";
+
+function ExpenseItem({ description, amount, date }) {
+  return (
+    <Pressable>
+      <View style={styles.expenseItem}>
+        <View>
+          <Text style={[styles.textBase, styles.description]}>
+            {description}
+          </Text>
+          <Text style={[styles.textBase, styles.dateText]}>
+            {getFormattedDate(date)}
+          </Text>
+        </View>
+        <View style={styles.amountContainer}>
+          <Text style={styles.amountText}>{amount.toFixed(2)}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
+}
+
+export default ExpenseItem;
+
+const styles = StyleSheet.create({
+  expenseItem: {
+    padding: 12,
+    marginVertical: 8,
+    backgroundColor: GlobalStyles.colors.primary500,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 8,
+    elevation: 2,
+  },
+  textBase: {
+    color: GlobalStyles.colors.primary50,
+  },
+  dateText: {
+    fontSize: 14,
+  },
+  description: {
+    fontSize: 17,
+    marginBottom: 4,
+  },
+  amountContainer: {
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    minWidth: 80,
+  },
+  amountText: {
+    color: GlobalStyles.colors.primary500,
+    fontWeight: "bold",
+  },
+});
