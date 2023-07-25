@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   period: {
-    fontSize: 12,
-    color: GlobalStyles.colors.primary40,
+    fontSize: 14,
+    color: GlobalStyles.colors.primary400,
   },
   sum: {
     fontSize: 16,
