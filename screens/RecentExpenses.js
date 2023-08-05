@@ -1,16 +1,47 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import { ExpensesContext } from "../store/expenses-context";
 import { getDateMinusDays } from "../util/date";
+import { fetchExpense } from "../util/htpp";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
+import ErrorOverlay from "../components/ui/ErrorOverlay";
 
 function RecentExpenses() {
-  const expensesCtx = useContext(ExpensesContext);
+  const [isFatching, setIsFatching] = useState(true);
+  const [error, setError] = useState();
+  const expenseCtx = useContext(ExpensesContext);
 
-  const recentExpenses = expensesCtx.expenses.filter((expense) => {
+  useEffect(() => {
+    async function getExpense() {
+      setIsFatching(true);
+      try {
+        const expenses = await fetchExpense();
+      } catch (error) {
+        setError("Could not fetch expenses!");
+      }
+      setIsFatching(false);
+      expenseCtx.setExpenses(expenses);
+    }
+
+    getExpense();
+  }, []);
+
+  function errorHandler() {
+    setError(null);
+  }
+
+  if (error && !isFatching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler} />;
+  }
+
+  if (isFatching) {
+    return <LoadingOverlay />;
+  }
+
+  const recentExpenses = expenseCtx.expenses.filter((expense) => {
     const today = new Date();
     const date7DaysAgo = getDateMinusDays(today, 7);
 
-    console.log(expense.date > date7DaysAgo);
     return expense.date > date7DaysAgo && expense.date <= today;
   });
 

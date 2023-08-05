@@ -10,7 +10,6 @@ function Input({ label, style, textInputConfig, invalid }) {
 
   if (invalid) {
     inputStyles.push(styles.invalidInput);
-    console.log(invalid);
   }
 
   return (
